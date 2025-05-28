@@ -9,8 +9,7 @@ const EXAMPLE_MENU_ITEMS = [
     { value: 'option5', label: 'Option 5' },
 ];
 
-export const Playg
-round = () => {
+export const Playground = () => {
     const [selected, setSelected] = React.useState<string | undefined>(undefined);
     const [visible, setVisible] = React.useState(false);
 
