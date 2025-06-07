@@ -1,11 +1,17 @@
 {
 	"name": "react-study",
+	"version": "0.0.1",
+	"workspaces": [
+		"apps/*"
+	],
 	"scripts": {
 		"lint": "pnpm eslint",
 		"lint:fix": "pnpm eslint:fix",
 		"eslint": "eslint --max-warnings=0 .",
-		"eslint:fix": "eslint --fix ."
+		"eslint:fix": "eslint --fix .",
+		"build": "pnpm build:context-api"
 	},
+	"packageManager": "pnpm@8.14.0",
 	"devDependencies": {
 		"@types/react": "^19.1.6",
 		"@types/react-dom": "^19.1.5",
