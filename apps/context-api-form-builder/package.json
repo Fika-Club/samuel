@@ -1,0 +1,16 @@
+{
+  "name": "context-api-form-builder",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite --host"
+  },
+  "description": "A simple form builder using React Context API",
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "vite": "^6.3.3"
+  },
+  "dependencies": {
+    "@radix-ui/themes": "^3.2.1",
+    "uuid": "^11.1.0"
+  }
+}
