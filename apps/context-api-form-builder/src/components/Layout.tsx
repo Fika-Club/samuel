@@ -1,8 +1,9 @@
 import { FormBuilderProvider } from '../contexts/FormBuilderContext';
-import * as className from './layout.css';
 import FieldList from './field-list/FieldList';
 import FormFooter from './form-footer/FormFooter';
-import { Flex, Box, Section, Container } from '@radix-ui/themes';
+import { Flex, Box } from '@radix-ui/themes';
+import FieldEditor from './field-editor/FieldEditor';
+import FormPreview from './form-preview/FormPreview';
 export default function Layout() {
     return (
         <Box width="100%" height="100%" py="100px">
@@ -12,16 +13,17 @@ export default function Layout() {
                         width="800px"
                         height="500px"
                         radius="medium"
-                        // color="11"
                         style={{
-                            backgroundColor: 'var(--accent-12)',
+                            backgroundColor: 'var(--accent-surface)',
                             borderRadius: 'var(--radius-5)',
                             boxShadow: 'var(--shadow-6)',
                         }}
                     >
-                        <div className={className.formBuilderContent}>
+                        <Flex gap="2" height="calc(100% - 80px)">
                             <FieldList />
-                        </div>
+                            <FieldEditor />
+                            <FormPreview />
+                        </Flex>
                         <FormFooter />
                     </Box>
                 </FormBuilderProvider>
