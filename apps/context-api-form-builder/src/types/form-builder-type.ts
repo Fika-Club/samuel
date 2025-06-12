@@ -1,3 +1,5 @@
+import { FIELDS } from '../constants/field-constants';
+
 export type FormBuilderAction =
     | { type: 'ADD_FIELD'; payload: FieldType }
     | { type: 'REMOVE_FIELD'; payload: { id: string } }
@@ -5,7 +7,7 @@ export type FormBuilderAction =
     | { type: 'SELECT_FIELD'; payload: { id: string } }
     | { type: 'REORDER_FIELDS'; payload: { from: number; to: number } };
 
-export type FieldType = 'text' | 'number' | 'select';
+export type FieldType = keyof typeof FIELDS;
 
 export type Field = TextField | NumberField | SelectField;
 
