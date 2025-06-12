@@ -12,4 +12,7 @@
       "baseUrl": ".",
       "jsx": "react-jsx",
     },
+    "include": [
+      "apps",
+    ]
 }
