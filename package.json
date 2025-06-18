@@ -9,8 +9,8 @@
 		"lint:fix": "pnpm eslint:fix",
 		"eslint": "eslint --max-warnings=0 .",
 		"eslint:fix": "eslint --fix .",
-		"build": "pnpm build:context-api",
-		"dev:context-api": "pnpm --filter context-api-form-builder dev"
+		"dev:context-api": "pnpm --filter context-api-form-builder dev",
+		"dev:emotion": "pnpm --filter emotion dev"
 	},
 	"packageManager": "pnpm@8.14.0",
 	"devDependencies": {

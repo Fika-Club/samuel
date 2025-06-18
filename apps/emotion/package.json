@@ -1,7 +1,15 @@
 {
   "name": "emotion",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "dev": "webpack serve --config webpack.config.js --mode development",
+    "build": "webpack --config webpack.config.js --mode production",
+    "clean": "rm -rf dist",
+    "eslint": "eslint 'src/**/*.{js,ts,jsx,tsx} --max-warnings=0",
+    "eslint:fix": "eslint 'src/**/*.{js,ts,jsx,tsx}' --fix",
+    "ts-check": "tsc --noEmit",
+    "lint": "npm run eslint && npm run ts-check"
+  },
   "description": "A simple form builder using Emotion for styling",
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -13,6 +21,7 @@
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
     "@emotion/babel-plugin": "^11.13.5",
+    "@types/node": "^22.15.30",
     "babel-loader": "^10.0.0",
     "ts-loader": "^9.5.2",
     "webpack": "^5.99.9",

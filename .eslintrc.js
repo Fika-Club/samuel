@@ -1,4 +1,7 @@
 module.exports = {
+    env: {
+      node: true,
+    },
     extends: [
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
@@ -18,4 +21,4 @@ module.exports = {
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-explicit-any': 'off'
     }
-}; 
+};

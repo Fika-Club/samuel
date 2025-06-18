@@ -95,6 +95,9 @@ importers:
       '@emotion/babel-plugin':
         specifier: ^11.13.5
         version: 11.13.5
+      '@types/node':
+        specifier: ^22.15.30
+        version: 22.15.30
       babel-loader:
         specifier: ^10.0.0
         version: 10.0.0(@babel/core@7.27.4)(webpack@5.99.9)
