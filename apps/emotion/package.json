@@ -1,0 +1,22 @@
+{
+  "name": "emotion",
+  "version": "1.0.0",
+  "scripts": {},
+  "description": "A simple form builder using Emotion for styling",
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.27.4",
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@emotion/babel-plugin": "^11.13.5",
+    "babel-loader": "^10.0.0",
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
+}
