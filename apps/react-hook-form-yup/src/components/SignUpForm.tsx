@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, memo, useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signUpSchema } from '../schemas/signUpSchema';
@@ -10,13 +10,26 @@ import '../styles/SignUpForm.css';
 /**
  * SignUpForm Component
  * Main signup form component with React Hook Form integration and Yup validation
+ * Optimized with React.memo and memoized callbacks for performance
  */
-export const SignUpForm: React.FC<SignUpFormProps> = ({
+export const SignUpForm: React.FC<SignUpFormProps> = memo(({
   onSubmit,
   onReset,
   className = ''
 }) => {
   const formRef = useRef<HTMLFormElement>(null);
+  
+  // Memoized resolver to prevent unnecessary re-creation
+  const resolver = useMemo(() => yupResolver(signUpSchema), []);
+  
+  // Memoized default values to prevent unnecessary re-creation
+  const defaultValues = useMemo(() => ({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    agreeToTerms: false
+  }), []);
   
   // React Hook Form setup with Yup resolver
   const {
@@ -25,15 +38,9 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
     reset,
     formState: { errors, isValid, isDirty, isSubmitting }
   } = useForm<SignUpFormData>({
-    resolver: yupResolver(signUpSchema),
+    resolver,
     mode: 'onChange', // Real-time validation
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      agreeToTerms: false
-    }
+    defaultValues
   });
 
   // Set up keyboard navigation
@@ -47,8 +54,8 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
     }
   }, []);
 
-  // Form submission handler with error handling
-  const onSubmitHandler = handleSubmit(
+  // Memoized form submission handler with error handling
+  const onSubmitHandler = useMemo(() => handleSubmit(
     async (data: SignUpFormData) => {
       try {
         // Log form data to console for debugging
@@ -92,18 +99,12 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
       focusFirstInvalidField(errors);
       announceToScreenReader('폼에 오류가 있습니다. 입력 내용을 확인해주세요.');
     }
-  );
+  ), [handleSubmit, onSubmit, reset]);
 
-  // Form reset handler - clears all fields, errors, and resets form state
-  const onResetHandler = () => {
+  // Memoized form reset handler - clears all fields, errors, and resets form state
+  const onResetHandler = useCallback(() => {
     // Reset form to initial values and clear all errors
-    reset({
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      agreeToTerms: false
-    });
+    reset(defaultValues);
     
     // Call external onReset handler if provided
     if (onReset) {
@@ -115,14 +116,14 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
     
     // Log reset action for debugging
     console.log('폼이 초기화되었습니다');
-  };
+  }, [reset, onReset, defaultValues]);
 
-  // Calculate form completion progress
-  const totalFields = 5;
-  const completedFields = Object.keys(errors).length === 0 && isDirty ? 
-    Object.values({ name: true, email: true, password: true, confirmPassword: true, agreeToTerms: true }).length : 
-    0;
-  const progressPercentage = (completedFields / totalFields) * 100;
+  // Memoized form completion progress calculation
+  const progressPercentage = useMemo(() => {
+    const totalFields = 5;
+    const completedFields = Object.keys(errors).length === 0 && isDirty ? totalFields : 0;
+    return (completedFields / totalFields) * 100;
+  }, [errors, isDirty]);
 
   return (
     <div className={`signup-form ${className} ${isSubmitting ? 'is-submitting' : ''}`}>
@@ -239,6 +240,8 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
       </form>
     </div>
   );
-};
+});
+
+SignUpForm.displayName = 'SignUpForm';
 
 export default SignUpForm;

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { FormFieldProps } from '../types/signUp.types';
 import ErrorMessage from './ErrorMessage';
 
-const FormField: React.FC<FormFieldProps> = ({
+const FormField: React.FC<FormFieldProps> = memo(({
   name,
   label,
   type = 'text',
@@ -18,6 +18,13 @@ const FormField: React.FC<FormFieldProps> = ({
   const fieldId = `field-${name}`;
   const errorId = `error-${name}`;
   const hasError = !!error;
+
+  // Memoized event handlers to prevent unnecessary re-renders
+  const handleFocus = useCallback(() => setIsFocused(true), []);
+  const handleBlur = useCallback(() => setIsFocused(false), []);
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setHasValue(type === 'checkbox' ? e.target.checked : e.target.value.length > 0);
+  }, [type]);
   
   // Determine field state classes
   const fieldClasses = [
@@ -38,7 +45,7 @@ const FormField: React.FC<FormFieldProps> = ({
             aria-describedby={hasError ? errorId : undefined}
             aria-invalid={hasError}
             {...register(name, {
-              onChange: (e) => setHasValue(e.target.checked)
+              onChange: handleChange
             })}
           />
           <label 
@@ -71,12 +78,10 @@ const FormField: React.FC<FormFieldProps> = ({
         aria-invalid={hasError}
         autoComplete={getAutoComplete(name)}
         {...register(name, {
-          onChange: (e) => {
-            setHasValue(e.target.value.length > 0);
-          }
+          onChange: handleChange
         })}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
       <ErrorMessage 
         message={error?.message} 
@@ -84,7 +89,7 @@ const FormField: React.FC<FormFieldProps> = ({
       />
     </div>
   );
-};
+});
 
 // Helper function to set appropriate autocomplete attributes
 const getAutoComplete = (fieldName: string): string => {
@@ -97,5 +102,7 @@ const getAutoComplete = (fieldName: string): string => {
   
   return autoCompleteMap[fieldName] || 'off';
 };
+
+FormField.displayName = 'FormField';
 
 export default FormField;

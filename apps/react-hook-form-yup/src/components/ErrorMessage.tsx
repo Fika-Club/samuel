@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 interface ErrorMessageProps {
   message?: string;
   visible: boolean;
 }
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, visible }) => {
+const ErrorMessage: React.FC<ErrorMessageProps> = memo(({ message, visible }) => {
   if (!visible || !message) {
     return null;
   }
@@ -19,6 +19,8 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, visible }) => {
       {message}
     </span>
   );
-};
+});
+
+ErrorMessage.displayName = 'ErrorMessage';
 
 export default ErrorMessage;
