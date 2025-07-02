@@ -32,12 +32,52 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
     }
   });
 
-  // Form submission handler
-  const onSubmitHandler = handleSubmit((data: SignUpFormData) => {
-    if (onSubmit) {
-      onSubmit(data);
+  // Form submission handler with error handling
+  const onSubmitHandler = handleSubmit(
+    async (data: SignUpFormData) => {
+      try {
+        // Log form data to console for debugging
+        console.log('회원가입 데이터:', data);
+        
+        // Process form data (remove confirmPassword from submission data)
+        const { confirmPassword, ...submissionData } = data;
+        console.log('제출할 데이터:', submissionData);
+        
+        // Call external onSubmit handler if provided
+        if (onSubmit) {
+          await onSubmit(data);
+        }
+        
+        // Show success message to user
+        alert('회원가입이 완료되었습니다!');
+        
+        // Reset form after successful submission
+        reset();
+        
+      } catch (error) {
+        // Handle form submission errors gracefully
+        console.error('회원가입 실패:', error);
+        
+        // Show user-friendly error message
+        const errorMessage = error instanceof Error 
+          ? error.message 
+          : '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.';
+        
+        alert(errorMessage);
+      }
+    },
+    (errors) => {
+      // Handle validation errors
+      console.error('폼 유효성 검사 실패:', errors);
+      
+      // Find first error field and focus on it
+      const firstErrorField = Object.keys(errors)[0];
+      if (firstErrorField) {
+        const element = document.querySelector(`[name="${firstErrorField}"]`) as HTMLElement;
+        element?.focus();
+      }
     }
-  });
+  );
 
   // Form reset handler
   const onResetHandler = () => {

@@ -17,7 +17,7 @@ export interface SignUpFormData {
  * Props for the main SignUpForm component
  */
 export interface SignUpFormProps {
-  onSubmit?: (data: SignUpFormData) => void;
+  onSubmit?: (data: SignUpFormData) => void | Promise<void>;
   onReset?: () => void;
   className?: string;
 }
