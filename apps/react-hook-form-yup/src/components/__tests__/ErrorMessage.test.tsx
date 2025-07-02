@@ -264,7 +264,7 @@ describe('ErrorMessage Component', () => {
       // Whitespace-only message should still render
       const errorMessage = screen.getByRole('alert');
       expect(errorMessage).toBeInTheDocument();
-      expect(errorMessage).toHaveTextContent('   ');
+      expect(errorMessage.textContent).toBe('   ');
     });
 
     it('should handle zero-length string', () => {

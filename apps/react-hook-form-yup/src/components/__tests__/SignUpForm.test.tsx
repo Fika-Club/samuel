@@ -45,7 +45,7 @@ describe('SignUpForm Integration Tests', () => {
 
       expect(screen.getByLabelText(/이름/)).toBeInTheDocument();
       expect(screen.getByLabelText(/이메일/)).toBeInTheDocument();
-      expect(screen.getByLabelText(/^비밀번호$/)).toBeInTheDocument();
+      expect(screen.getByLabelText(/비밀번호\*$/)).toBeInTheDocument();
       expect(screen.getByLabelText(/비밀번호 확인/)).toBeInTheDocument();
       expect(screen.getByLabelText(/서비스 이용약관/)).toBeInTheDocument();
     });
@@ -87,8 +87,9 @@ describe('SignUpForm Integration Tests', () => {
       const nameInput = screen.getByLabelText(/이름/);
       const emailInput = screen.getByLabelText(/이메일/);
 
-      // Trigger validation by focusing and blurring
-      await user.click(nameInput);
+      // Trigger validation by typing and clearing
+      await user.type(nameInput, 'a');
+      await user.clear(nameInput);
       await user.tab();
       
       await user.click(emailInput);
@@ -110,7 +111,8 @@ describe('SignUpForm Integration Tests', () => {
       const nameInput = screen.getByLabelText(/이름/);
 
       // Test empty name
-      await user.click(nameInput);
+      await user.type(nameInput, 'a');
+      await user.clear(nameInput);
       await user.tab();
       
       await waitFor(() => {
@@ -262,7 +264,7 @@ describe('SignUpForm Integration Tests', () => {
       // Fill all fields with valid data
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'password123!');
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
@@ -277,7 +279,7 @@ describe('SignUpForm Integration Tests', () => {
       // Fill all fields with valid data first
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'password123!');
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
@@ -298,13 +300,13 @@ describe('SignUpForm Integration Tests', () => {
     });
 
     it('should show loading state during submission', async () => {
-      const slowOnSubmit = jest.fn(() => new Promise(resolve => setTimeout(resolve, 100)));
+      const slowOnSubmit = jest.fn((): Promise<void> => new Promise(resolve => setTimeout(resolve, 100)));
       render(<SignUpForm onSubmit={slowOnSubmit} />);
 
       // Fill form with valid data
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.getByLabelText(/^비밀번호$/), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'password123!');
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
@@ -335,7 +337,7 @@ describe('SignUpForm Integration Tests', () => {
       // Fill form
       await user.type(screen.getByLabelText(/이름/), formData.name);
       await user.type(screen.getByLabelText(/이메일/), formData.email);
-      await user.type(screen.getByLabelText('비밀번호'), formData.password);
+      await user.type(screen.getByLabelText(/비밀번호\*$/), formData.password);
       await user.type(screen.getByLabelText(/비밀번호 확인/), formData.confirmPassword);
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
@@ -354,7 +356,7 @@ describe('SignUpForm Integration Tests', () => {
       // Fill and submit form
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'password123!');
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
@@ -368,7 +370,7 @@ describe('SignUpForm Integration Tests', () => {
       // Check form is reset
       expect(screen.getByLabelText(/이름/)).toHaveValue('');
       expect(screen.getByLabelText(/이메일/)).toHaveValue('');
-      expect(screen.getByLabelText('비밀번호')).toHaveValue('');
+      expect(screen.getByLabelText(/비밀번호\*$/)).toHaveValue('');
       expect(screen.getByLabelText(/비밀번호 확인/)).toHaveValue('');
       expect(screen.getByLabelText(/서비스 이용약관/)).not.toBeChecked();
     });
@@ -380,7 +382,7 @@ describe('SignUpForm Integration Tests', () => {
       // Fill and submit form
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'password123!');
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
@@ -416,7 +418,7 @@ describe('SignUpForm Integration Tests', () => {
       // Fill form with data
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.getByLabelText(/^비밀번호$/), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'password123!');
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
@@ -427,7 +429,7 @@ describe('SignUpForm Integration Tests', () => {
       // Check all fields are cleared
       expect(screen.getByLabelText(/이름/)).toHaveValue('');
       expect(screen.getByLabelText(/이메일/)).toHaveValue('');
-      expect(screen.getByLabelText(/^비밀번호$/)).toHaveValue('');
+      expect(screen.getByLabelText(/비밀번호\*$/)).toHaveValue('');
       expect(screen.getByLabelText(/비밀번호 확인/)).toHaveValue('');
       expect(screen.getByLabelText(/서비스 이용약관/)).not.toBeChecked();
 
@@ -439,7 +441,8 @@ describe('SignUpForm Integration Tests', () => {
 
       // Trigger some validation errors
       const nameInput = screen.getByLabelText(/이름/);
-      await user.click(nameInput);
+      await user.type(nameInput, 'a');
+      await user.clear(nameInput);
       await user.tab();
 
       await waitFor(() => {
@@ -460,7 +463,7 @@ describe('SignUpForm Integration Tests', () => {
       // Fill form to enable submit button
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'password123!');
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
@@ -490,7 +493,7 @@ describe('SignUpForm Integration Tests', () => {
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
       
       // Step 3: Fill password
-      await user.type(screen.getByLabelText('비밀번호'), 'securePass123!');
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'securePass123!');
       
       // Step 4: Confirm password
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'securePass123!');
@@ -526,7 +529,7 @@ describe('SignUpForm Integration Tests', () => {
       // Step 1: Fill form with some errors
       await user.type(screen.getByLabelText(/이름/), '김'); // Too short
       await user.type(screen.getByLabelText(/이메일/), 'invalid-email');
-      await user.type(screen.getByLabelText('비밀번호'), 'short'); // Too short
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'short'); // Too short
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'different');
 
       // Step 2: Verify errors are shown
@@ -545,8 +548,8 @@ describe('SignUpForm Integration Tests', () => {
       await user.clear(screen.getByLabelText(/이메일/));
       await user.type(screen.getByLabelText(/이메일/), 'kim@example.com');
 
-      await user.clear(screen.getByLabelText('비밀번호'));
-      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.clear(screen.getByLabelText(/비밀번호\*$/));
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'password123!');
 
       await user.clear(screen.getByLabelText(/비밀번호 확인/));
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
@@ -579,7 +582,7 @@ describe('SignUpForm Integration Tests', () => {
       // Step 4: Re-enter data
       await user.type(screen.getByLabelText(/이름/), '김철수');
       await user.type(screen.getByLabelText(/이메일/), 'kim@example.com');
-      await user.type(screen.getByLabelText('비밀번호'), 'newPassword123!');
+      await user.type(screen.getByLabelText(/비밀번호\*$/), 'newPassword123!');
       await user.type(screen.getByLabelText(/비밀번호 확인/), 'newPassword123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
@@ -624,7 +627,8 @@ describe('SignUpForm Integration Tests', () => {
       const nameInput = screen.getByLabelText(/이름/);
       
       // Trigger validation error
-      await user.click(nameInput);
+      await user.type(nameInput, 'a');
+      await user.clear(nameInput);
       await user.tab();
 
       await waitFor(() => {

@@ -10,7 +10,8 @@
 		"eslint": "eslint --max-warnings=0 .",
 		"eslint:fix": "eslint --fix .",
 		"dev:context-api": "pnpm --filter context-api-form-builder dev",
-		"dev:emotion": "pnpm --filter emotion dev"
+		"dev:emotion": "pnpm --filter emotion dev",
+		"dev:react-hook-form-yup": "pnpm --filter react-hook-form-yup dev"
 	},
 	"packageManager": "pnpm@8.14.0",
 	"devDependencies": {
