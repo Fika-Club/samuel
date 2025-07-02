@@ -15,13 +15,6 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, visible }) => {
       className="error-message"
       role="alert"
       aria-live="polite"
-      style={{
-        color: '#dc3545',
-        fontSize: '0.875rem',
-        marginTop: '0.25rem',
-        display: 'block',
-        lineHeight: '1.4'
-      }}
     >
       {message}
     </span>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FormFieldProps } from '../types/signUp.types';
 import ErrorMessage from './ErrorMessage';
 
@@ -12,73 +12,41 @@ const FormField: React.FC<FormFieldProps> = ({
   required = false,
   className = ''
 }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [hasValue, setHasValue] = useState(false);
+  
   const fieldId = `field-${name}`;
   const errorId = `error-${name}`;
   const hasError = !!error;
-
-  const baseInputStyles = {
-    width: '100%',
-    padding: '0.75rem',
-    border: `2px solid ${hasError ? '#dc3545' : '#e1e5e9'}`,
-    borderRadius: '0.375rem',
-    fontSize: '1rem',
-    lineHeight: '1.5',
-    transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
-    outline: 'none'
-  };
-
-  const focusStyles = {
-    borderColor: hasError ? '#dc3545' : '#0d6efd',
-    boxShadow: hasError 
-      ? '0 0 0 0.2rem rgba(220, 53, 69, 0.25)' 
-      : '0 0 0 0.2rem rgba(13, 110, 253, 0.25)'
-  };
-
-  const labelStyles = {
-    display: 'block',
-    marginBottom: '0.5rem',
-    fontWeight: '500',
-    color: '#212529',
-    fontSize: '0.875rem'
-  };
-
-  const checkboxContainerStyles = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem'
-  };
-
-  const checkboxStyles = {
-    width: '1rem',
-    height: '1rem',
-    cursor: 'pointer'
-  };
-
-  const checkboxLabelStyles = {
-    ...labelStyles,
-    marginBottom: '0',
-    cursor: 'pointer',
-    fontSize: '0.875rem'
-  };
+  
+  // Determine field state classes
+  const fieldClasses = [
+    'form-field',
+    className,
+    hasError ? 'has-error' : '',
+    !hasError && hasValue ? 'is-valid' : '',
+    isFocused ? 'is-focused' : ''
+  ].filter(Boolean).join(' ');
 
   if (type === 'checkbox') {
     return (
-      <div className={`form-field ${className}`} style={{ marginBottom: '1rem' }}>
-        <div style={checkboxContainerStyles}>
+      <div className={fieldClasses}>
+        <div className={`checkbox-container ${hasError ? 'has-error' : ''}`}>
           <input
             id={fieldId}
             type="checkbox"
-            style={checkboxStyles}
             aria-describedby={hasError ? errorId : undefined}
             aria-invalid={hasError}
-            {...register(name)}
+            {...register(name, {
+              onChange: (e) => setHasValue(e.target.checked)
+            })}
           />
           <label 
             htmlFor={fieldId} 
-            style={checkboxLabelStyles}
+            className="checkbox-label"
           >
             {label}
-            {required && <span style={{ color: '#dc3545', marginLeft: '0.25rem' }}>*</span>}
+            {required && <span className="required-asterisk">*</span>}
           </label>
         </div>
         <ErrorMessage 
@@ -90,29 +58,25 @@ const FormField: React.FC<FormFieldProps> = ({
   }
 
   return (
-    <div className={`form-field ${className}`} style={{ marginBottom: '1rem' }}>
-      <label 
-        htmlFor={fieldId} 
-        style={labelStyles}
-      >
+    <div className={fieldClasses}>
+      <label htmlFor={fieldId}>
         {label}
-        {required && <span style={{ color: '#dc3545', marginLeft: '0.25rem' }}>*</span>}
+        {required && <span className="required-asterisk">*</span>}
       </label>
       <input
         id={fieldId}
         type={type}
         placeholder={placeholder}
-        style={baseInputStyles}
         aria-describedby={hasError ? errorId : undefined}
         aria-invalid={hasError}
-        {...register(name)}
-        onFocus={(e) => {
-          Object.assign(e.target.style, focusStyles);
-        }}
-        onBlur={(e) => {
-          e.target.style.borderColor = hasError ? '#dc3545' : '#e1e5e9';
-          e.target.style.boxShadow = 'none';
-        }}
+        autoComplete={getAutoComplete(name)}
+        {...register(name, {
+          onChange: (e) => {
+            setHasValue(e.target.value.length > 0);
+          }
+        })}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
       <ErrorMessage 
         message={error?.message} 
@@ -120,6 +84,18 @@ const FormField: React.FC<FormFieldProps> = ({
       />
     </div>
   );
+};
+
+// Helper function to set appropriate autocomplete attributes
+const getAutoComplete = (fieldName: string): string => {
+  const autoCompleteMap: Record<string, string> = {
+    name: 'name',
+    email: 'email',
+    password: 'new-password',
+    confirmPassword: 'new-password'
+  };
+  
+  return autoCompleteMap[fieldName] || 'off';
 };
 
 export default FormField;

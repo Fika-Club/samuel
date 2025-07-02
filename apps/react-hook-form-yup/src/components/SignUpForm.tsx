@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signUpSchema } from '../schemas/signUpSchema';
 import { SignUpFormData, SignUpFormProps } from '../types/signUp.types';
 import FormField from './FormField';
+import { focusFirstInvalidField, handleFormKeyNavigation, announceToScreenReader } from '../utils/focusManagement';
+import '../styles/SignUpForm.css';
 
 /**
  * SignUpForm Component
@@ -14,6 +16,8 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
   onReset,
   className = ''
 }) => {
+  const formRef = useRef<HTMLFormElement>(null);
+  
   // React Hook Form setup with Yup resolver
   const {
     register,
@@ -31,6 +35,17 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
       agreeToTerms: false
     }
   });
+
+  // Set up keyboard navigation
+  useEffect(() => {
+    const form = formRef.current;
+    if (form) {
+      form.addEventListener('keydown', handleFormKeyNavigation);
+      return () => {
+        form.removeEventListener('keydown', handleFormKeyNavigation);
+      };
+    }
+  }, []);
 
   // Form submission handler with error handling
   const onSubmitHandler = handleSubmit(
@@ -51,6 +66,9 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
         // Show success message to user
         alert('회원가입이 완료되었습니다!');
         
+        // Announce success to screen readers
+        announceToScreenReader('회원가입이 성공적으로 완료되었습니다.');
+        
         // Reset form after successful submission
         reset();
         
@@ -70,12 +88,9 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
       // Handle validation errors
       console.error('폼 유효성 검사 실패:', errors);
       
-      // Find first error field and focus on it
-      const firstErrorField = Object.keys(errors)[0];
-      if (firstErrorField) {
-        const element = document.querySelector(`[name="${firstErrorField}"]`) as HTMLElement;
-        element?.focus();
-      }
+      // Focus first invalid field and announce error
+      focusFirstInvalidField(errors);
+      announceToScreenReader('폼에 오류가 있습니다. 입력 내용을 확인해주세요.');
     }
   );
 
@@ -95,32 +110,41 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
       onReset();
     }
     
+    // Announce reset to screen readers
+    announceToScreenReader('폼이 초기화되었습니다.');
+    
     // Log reset action for debugging
     console.log('폼이 초기화되었습니다');
   };
 
+  // Calculate form completion progress
+  const totalFields = 5;
+  const completedFields = Object.keys(errors).length === 0 && isDirty ? 
+    Object.values({ name: true, email: true, password: true, confirmPassword: true, agreeToTerms: true }).length : 
+    0;
+  const progressPercentage = (completedFields / totalFields) * 100;
+
   return (
-    <div 
-      className={`signup-form ${className}`}
-      style={{
-        maxWidth: '400px',
-        margin: '0 auto',
-        padding: '24px',
-        backgroundColor: '#f8f9fa',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
-      }}
-    >
-      <h2 style={{ 
-        textAlign: 'center', 
-        marginBottom: '24px', 
-        color: '#333',
-        fontSize: '24px',
-        fontWeight: '600'
-      }}>
-        회원가입
-      </h2>
-      <form onSubmit={onSubmitHandler} noValidate>
+    <div className={`signup-form ${className} ${isSubmitting ? 'is-submitting' : ''}`}>
+      {/* Progress indicator */}
+      <div 
+        className="form-progress" 
+        style={{ width: `${progressPercentage}%` }}
+        aria-hidden="true"
+      />
+      
+      <h2>회원가입</h2>
+      <form 
+        ref={formRef}
+        onSubmit={onSubmitHandler} 
+        noValidate
+        role="form"
+        aria-label="회원가입 폼"
+        aria-describedby="form-description"
+      >
+        <div id="form-description" className="sr-only">
+          회원가입을 위해 모든 필드를 입력해주세요. 필수 항목은 별표로 표시되어 있습니다.
+        </div>
         {/* Name field with real-time validation */}
         <FormField
           name="name"
@@ -176,31 +200,14 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
         />
 
         {/* Submit and Reset buttons */}
-        <div 
-          className="form-actions"
-          style={{
-            display: 'flex',
-            gap: '12px',
-            marginTop: '24px',
-            justifyContent: 'center'
-          }}
-        >
+        <div className="form-actions">
           <button
             type="submit"
             disabled={!isValid || isSubmitting}
             className="submit-button"
-            style={{
-              padding: '12px 24px',
-              backgroundColor: isValid && !isSubmitting ? '#007bff' : '#6c757d',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: isValid && !isSubmitting ? 'pointer' : 'not-allowed',
-              fontSize: '16px',
-              fontWeight: '500',
-              transition: 'background-color 0.2s'
-            }}
+            aria-describedby={!isValid ? "submit-help" : undefined}
           >
+            {isSubmitting && <span className="loading-spinner" aria-hidden="true" />}
             {isSubmitting ? '처리 중...' : '회원가입'}
           </button>
           
@@ -209,21 +216,26 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             onClick={onResetHandler}
             disabled={isSubmitting}
             className="reset-button"
-            style={{
-              padding: '12px 24px',
-              backgroundColor: isSubmitting ? '#6c757d' : '#dc3545',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              fontSize: '16px',
-              fontWeight: '500',
-              transition: 'background-color 0.2s'
-            }}
           >
             초기화
           </button>
         </div>
+        
+        {/* Submit button help text */}
+        {!isValid && (
+          <div 
+            id="submit-help" 
+            className="submit-help"
+            style={{
+              textAlign: 'center',
+              marginTop: '8px',
+              fontSize: '13px',
+              color: '#6c757d'
+            }}
+          >
+            모든 필드를 올바르게 입력해주세요
+          </div>
+        )}
       </form>
     </div>
   );

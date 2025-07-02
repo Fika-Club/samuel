@@ -1,0 +1,723 @@
+/* SignUp Form Styles */
+
+/* CSS Reset and Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+/* Form Container */
+.signup-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 32px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.signup-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #007bff, #0056b3);
+}
+
+.signup-form:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px -5px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Form Title */
+.signup-form h2 {
+  text-align: center;
+  margin-bottom: 32px;
+  color: #1a202c;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  position: relative;
+}
+
+.signup-form h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #007bff, #0056b3);
+  border-radius: 2px;
+}
+
+/* Form Field Container */
+.form-field {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.form-field:last-of-type {
+  margin-bottom: 32px;
+}
+
+/* Labels */
+.form-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+  letter-spacing: 0.025em;
+  transition: color 0.2s ease;
+}
+
+.form-field label .required-asterisk {
+  color: #dc3545;
+  margin-left: 4px;
+  font-weight: 700;
+}
+
+/* Input Fields */
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="password"] {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  outline: none;
+  position: relative;
+}
+
+.form-field input[type="text"]:focus,
+.form-field input[type="email"]:focus,
+.form-field input[type="password"]:focus {
+  border-color: #007bff;
+  box-shadow: 
+    0 0 0 3px rgba(0, 123, 255, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.form-field input[type="text"]:hover,
+.form-field input[type="email"]:hover,
+.form-field input[type="password"]:hover {
+  border-color: #cbd5e0;
+}
+
+/* Error State */
+.form-field.has-error input {
+  border-color: #dc3545;
+  background-color: #fef2f2;
+}
+
+.form-field.has-error input:focus {
+  border-color: #dc3545;
+  box-shadow: 
+    0 0 0 3px rgba(220, 53, 69, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.form-field.has-error label {
+  color: #dc3545;
+}
+
+/* Valid State */
+.form-field.is-valid input {
+  border-color: #28a745;
+  background-color: #f0f9f0;
+}
+
+.form-field.is-valid input:focus {
+  border-color: #28a745;
+  box-shadow: 
+    0 0 0 3px rgba(40, 167, 69, 0.1),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Checkbox Styling */
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.checkbox-container:hover {
+  background-color: #f1f3f4;
+  border-color: #cbd5e0;
+}
+
+.checkbox-container.has-error {
+  background-color: #fef2f2;
+  border-color: #dc3545;
+}
+
+.form-field input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #007bff;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.checkbox-label {
+  margin: 0 !important;
+  cursor: pointer;
+  font-size: 14px !important;
+  line-height: 1.5;
+  color: #374151;
+  user-select: none;
+}
+
+/* Error Messages */
+.error-message {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  animation: slideDown 0.2s ease-out;
+}
+
+.error-message::before {
+  content: '⚠';
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+  justify-content: center;
+}
+
+/* Buttons */
+.submit-button,
+.reset-button {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.submit-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.submit-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.submit-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+.reset-button {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+}
+
+.reset-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+.reset-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+}
+
+.reset-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Loading State */
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Focus Management */
+.form-field input:focus-visible,
+.form-field input[type="checkbox"]:focus-visible {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signup-form {
+    max-width: 100%;
+    margin: 16px;
+    padding: 24px 20px;
+    border-radius: 12px;
+  }
+  
+  .signup-form h2 {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .form-field {
+    margin-bottom: 20px;
+  }
+  
+  .form-field input[type="text"],
+  .form-field input[type="email"],
+  .form-field input[type="password"] {
+    padding: 12px 14px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .submit-button,
+  .reset-button {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+  }
+  
+  .checkbox-container {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-form {
+    margin: 8px;
+    padding: 20px 16px;
+  }
+  
+  .signup-form h2 {
+    font-size: 22px;
+  }
+  
+  .form-field input[type="text"],
+  .form-field input[type="email"],
+  .form-field input[type="password"] {
+    padding: 14px 12px;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .signup-form {
+    border: 2px solid #000;
+    background: #fff;
+  }
+  
+  .form-field input {
+    border: 2px solid #000;
+  }
+  
+  .submit-button {
+    background: #000;
+    border: 2px solid #000;
+  }
+  
+  .reset-button {
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .signup-form {
+    box-shadow: none;
+    border: 1px solid #000;
+    background: #fff;
+  }
+  
+  .submit-button,
+  .reset-button {
+    display: none;
+  }
+}
+/*
+ App Container Styles */
+.app {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.app-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.2) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.app-content {
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  z-index: 1;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.app-header h1 {
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: -0.025em;
+}
+
+.app-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Responsive adjustments for app container */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 16px;
+    align-items: flex-start;
+    padding-top: 40px;
+  }
+  
+  .app-header {
+    margin-bottom: 24px;
+  }
+  
+  .app-header h1 {
+    font-size: 28px;
+  }
+  
+  .app-header p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 12px;
+    padding-top: 32px;
+  }
+  
+  .app-header h1 {
+    font-size: 24px;
+  }
+}/
+* Additional UX Enhancements */
+
+/* Form submission loading overlay */
+.signup-form.is-submitting {
+  position: relative;
+  pointer-events: none;
+}
+
+.signup-form.is-submitting::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+  border-radius: 16px;
+  z-index: 10;
+}
+
+/* Smooth transitions for form state changes */
+.form-field input,
+.checkbox-container {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced focus indicators */
+.form-field input:focus,
+.form-field input[type="checkbox"]:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #007bff;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Progress indicator for form completion */
+.form-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #007bff, #0056b3);
+  border-radius: 2px 2px 0 0;
+  transition: width 0.3s ease;
+  z-index: 1;
+}
+
+/* Validation success indicators */
+.form-field.is-valid::after {
+  content: '✓';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #28a745;
+  font-weight: bold;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.form-field.is-valid input {
+  padding-right: 40px;
+}
+
+/* Enhanced button states */
+.submit-button:focus,
+.reset-button:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Improved checkbox styling */
+.form-field input[type="checkbox"] {
+  position: relative;
+  appearance: none;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.form-field input[type="checkbox"]:checked {
+  background: #007bff;
+  border-color: #007bff;
+}
+
+.form-field input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.form-field input[type="checkbox"]:hover {
+  border-color: #007bff;
+}
+
+/* Form field animations */
+@keyframes fieldFocus {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.02);
+  }
+}
+
+.form-field input:focus {
+  animation: fieldFocus 0.2s ease-out;
+}
+
+/* Error shake animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.form-field.has-error input {
+  animation: shake 0.3s ease-in-out;
+}
+
+/* Success pulse animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.form-field.is-valid input {
+  animation: pulse 0.3s ease-in-out;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .signup-form {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .signup-form h2 {
+    color: #e2e8f0;
+  }
+  
+  .form-field label {
+    color: #cbd5e0;
+  }
+  
+  .form-field input {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+  
+  .form-field input:focus {
+    border-color: #63b3ed;
+    background: #2d3748;
+  }
+  
+  .checkbox-container {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+  
+  .app-container {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  }
+}

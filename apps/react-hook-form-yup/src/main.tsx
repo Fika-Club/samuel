@@ -25,11 +25,4 @@ root.render(
 );
 
 // Development environment configuration
-if (process.env.NODE_ENV === 'development') {
-  console.log('🚀 React Hook Form + Yup 앱이 개발 모드로 시작되었습니다');
-  
-  // Enable React DevTools in development
-  if (typeof window !== 'undefined') {
-    (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__?.onCommitFiberRoot;
-  }
-}
+console.log('🚀 React Hook Form + Yup 앱이 시작되었습니다');
