@@ -16,6 +16,12 @@ describe('SignUpForm Integration Tests', () => {
   let mockOnReset: jest.Mock;
   let user: ReturnType<typeof userEvent.setup>;
 
+  // Helper function to get password input (first password field)
+  const getPasswordInput = () => screen.getAllByLabelText(/비밀번호/)[0];
+  
+  // Helper function to get confirm password input
+  const getConfirmPasswordInput = () => screen.getByLabelText(/비밀번호 확인/);
+
   beforeEach(() => {
     mockOnSubmit = jest.fn();
     mockOnReset = jest.fn();
@@ -39,8 +45,8 @@ describe('SignUpForm Integration Tests', () => {
 
       expect(screen.getByLabelText(/이름/)).toBeInTheDocument();
       expect(screen.getByLabelText(/이메일/)).toBeInTheDocument();
-      expect(screen.screen.getByDisplayValue('') // password field).toBeInTheDocument();
-      expect(getConfirmPasswordInput()).toBeInTheDocument();
+      expect(screen.getByLabelText(/^비밀번호$/)).toBeInTheDocument();
+      expect(screen.getByLabelText(/비밀번호 확인/)).toBeInTheDocument();
       expect(screen.getByLabelText(/서비스 이용약관/)).toBeInTheDocument();
     });
 
@@ -91,8 +97,11 @@ describe('SignUpForm Integration Tests', () => {
 
       await waitFor(() => {
         expect(screen.getByText('이름은 필수 입력 항목입니다')).toBeInTheDocument();
+      }, { timeout: 3000 });
+
+      await waitFor(() => {
         expect(screen.getByText('올바른 이메일 형식을 입력해주세요')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
     });
 
     it('should validate name field requirements', async () => {
@@ -162,7 +171,7 @@ describe('SignUpForm Integration Tests', () => {
     it('should validate password field requirements', async () => {
       render(<SignUpForm />);
 
-      const passwordInput = screen.screen.getByDisplayValue('') // password field;
+      const passwordInput = getPasswordInput();
 
       // Test short password
       await user.click(passwordInput);
@@ -198,7 +207,7 @@ describe('SignUpForm Integration Tests', () => {
     it('should validate password confirmation', async () => {
       render(<SignUpForm />);
 
-      const passwordInput = screen.screen.getByDisplayValue('') // password field;
+      const passwordInput = getPasswordInput();
       const confirmPasswordInput = getConfirmPasswordInput();
 
       // Set password
@@ -253,8 +262,8 @@ describe('SignUpForm Integration Tests', () => {
       // Fill all fields with valid data
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'password123!');
-      await user.type(getConfirmPasswordInput(), 'password123!');
+      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
       await waitFor(() => {
@@ -268,8 +277,8 @@ describe('SignUpForm Integration Tests', () => {
       // Fill all fields with valid data first
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'password123!');
-      await user.type(getConfirmPasswordInput(), 'password123!');
+      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
       const submitButton = screen.getByRole('button', { name: /회원가입/ });
@@ -295,8 +304,8 @@ describe('SignUpForm Integration Tests', () => {
       // Fill form with valid data
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'password123!');
-      await user.type(getConfirmPasswordInput(), 'password123!');
+      await user.type(screen.getByLabelText(/^비밀번호$/), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
       const submitButton = screen.getByRole('button', { name: /회원가입/ });
@@ -326,8 +335,8 @@ describe('SignUpForm Integration Tests', () => {
       // Fill form
       await user.type(screen.getByLabelText(/이름/), formData.name);
       await user.type(screen.getByLabelText(/이메일/), formData.email);
-      await user.type(screen.screen.getByDisplayValue('') // password field, formData.password);
-      await user.type(getConfirmPasswordInput(), formData.confirmPassword);
+      await user.type(screen.getByLabelText('비밀번호'), formData.password);
+      await user.type(screen.getByLabelText(/비밀번호 확인/), formData.confirmPassword);
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
       // Submit form
@@ -345,8 +354,8 @@ describe('SignUpForm Integration Tests', () => {
       // Fill and submit form
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'password123!');
-      await user.type(getConfirmPasswordInput(), 'password123!');
+      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
       const submitButton = screen.getByRole('button', { name: /회원가입/ });
@@ -359,8 +368,8 @@ describe('SignUpForm Integration Tests', () => {
       // Check form is reset
       expect(screen.getByLabelText(/이름/)).toHaveValue('');
       expect(screen.getByLabelText(/이메일/)).toHaveValue('');
-      expect(screen.screen.getByDisplayValue('') // password field).toHaveValue('');
-      expect(getConfirmPasswordInput()).toHaveValue('');
+      expect(screen.getByLabelText('비밀번호')).toHaveValue('');
+      expect(screen.getByLabelText(/비밀번호 확인/)).toHaveValue('');
       expect(screen.getByLabelText(/서비스 이용약관/)).not.toBeChecked();
     });
 
@@ -371,8 +380,8 @@ describe('SignUpForm Integration Tests', () => {
       // Fill and submit form
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'password123!');
-      await user.type(getConfirmPasswordInput(), 'password123!');
+      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
       const submitButton = screen.getByRole('button', { name: /회원가입/ });
@@ -407,8 +416,8 @@ describe('SignUpForm Integration Tests', () => {
       // Fill form with data
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'password123!');
-      await user.type(getConfirmPasswordInput(), 'password123!');
+      await user.type(screen.getByLabelText(/^비밀번호$/), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
       // Click reset button
@@ -418,8 +427,8 @@ describe('SignUpForm Integration Tests', () => {
       // Check all fields are cleared
       expect(screen.getByLabelText(/이름/)).toHaveValue('');
       expect(screen.getByLabelText(/이메일/)).toHaveValue('');
-      expect(screen.screen.getByDisplayValue('') // password field).toHaveValue('');
-      expect(getConfirmPasswordInput()).toHaveValue('');
+      expect(screen.getByLabelText(/^비밀번호$/)).toHaveValue('');
+      expect(screen.getByLabelText(/비밀번호 확인/)).toHaveValue('');
       expect(screen.getByLabelText(/서비스 이용약관/)).not.toBeChecked();
 
       expect(mockOnReset).toHaveBeenCalled();
@@ -451,8 +460,8 @@ describe('SignUpForm Integration Tests', () => {
       // Fill form to enable submit button
       await user.type(screen.getByLabelText(/이름/), '홍길동');
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'password123!');
-      await user.type(getConfirmPasswordInput(), 'password123!');
+      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
       const submitButton = screen.getByRole('button', { name: /회원가입/ });
@@ -481,10 +490,10 @@ describe('SignUpForm Integration Tests', () => {
       await user.type(screen.getByLabelText(/이메일/), 'hong@example.com');
       
       // Step 3: Fill password
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'securePass123!');
+      await user.type(screen.getByLabelText('비밀번호'), 'securePass123!');
       
       // Step 4: Confirm password
-      await user.type(getConfirmPasswordInput(), 'securePass123!');
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'securePass123!');
       
       // Step 5: Agree to terms
       await user.click(screen.getByLabelText(/서비스 이용약관/));
@@ -517,8 +526,8 @@ describe('SignUpForm Integration Tests', () => {
       // Step 1: Fill form with some errors
       await user.type(screen.getByLabelText(/이름/), '김'); // Too short
       await user.type(screen.getByLabelText(/이메일/), 'invalid-email');
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'short'); // Too short
-      await user.type(getConfirmPasswordInput(), 'different');
+      await user.type(screen.getByLabelText('비밀번호'), 'short'); // Too short
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'different');
 
       // Step 2: Verify errors are shown
       await user.tab(); // Trigger validation
@@ -536,11 +545,11 @@ describe('SignUpForm Integration Tests', () => {
       await user.clear(screen.getByLabelText(/이메일/));
       await user.type(screen.getByLabelText(/이메일/), 'kim@example.com');
 
-      await user.clear(screen.screen.getByDisplayValue('') // password field);
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'password123!');
+      await user.clear(screen.getByLabelText('비밀번호'));
+      await user.type(screen.getByLabelText('비밀번호'), 'password123!');
 
-      await user.clear(getConfirmPasswordInput());
-      await user.type(getConfirmPasswordInput(), 'password123!');
+      await user.clear(screen.getByLabelText(/비밀번호 확인/));
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'password123!');
 
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
@@ -570,8 +579,8 @@ describe('SignUpForm Integration Tests', () => {
       // Step 4: Re-enter data
       await user.type(screen.getByLabelText(/이름/), '김철수');
       await user.type(screen.getByLabelText(/이메일/), 'kim@example.com');
-      await user.type(screen.screen.getByDisplayValue('') // password field, 'newPassword123!');
-      await user.type(getConfirmPasswordInput(), 'newPassword123!');
+      await user.type(screen.getByLabelText('비밀번호'), 'newPassword123!');
+      await user.type(screen.getByLabelText(/비밀번호 확인/), 'newPassword123!');
       await user.click(screen.getByLabelText(/서비스 이용약관/));
 
       // Step 5: Verify form is valid and can be submitted
