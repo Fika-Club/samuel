@@ -1,14 +1,14 @@
 # Product Overview
 
-This is a React study repository containing multiple experimental applications and component patterns. The project serves as a learning playground for exploring different React patterns, styling approaches, and component architectures.
+This is a React study repository containing multiple example applications demonstrating different React patterns, libraries, and form handling approaches.
 
-## Key Applications
+## Applications
 
-- **Compound Components**: Demonstrates compound component patterns with context-based state sharing
-- **Emotion Styling**: Shows CSS-in-JS implementation using Emotion library
-- **Context API Form Builder**: Explores React Context API for form state management
-- **React Hook Form + Yup**: Integration of form validation libraries
+- **emotion**: Form builder using Emotion for CSS-in-JS styling
+- **react-hook-form-yup**: Signup form with React Hook Form and Yup validation, including comprehensive testing and accessibility features
+- **compound**: Component library with compound component patterns
+- **context-api-form-builder**: Form builder using React Context API
 
 ## Purpose
 
-Educational repository for experimenting with React patterns, component design, and modern frontend tooling configurations.
+Educational repository for exploring React ecosystem tools, form handling patterns, styling approaches, and testing strategies. Each app demonstrates specific techniques and best practices for modern React development.

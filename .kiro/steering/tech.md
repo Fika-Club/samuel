@@ -1,49 +1,66 @@
-# Tech Stack & Build System
+# Technology Stack
+
+## Build System & Package Management
+- **pnpm**: Package manager with workspace support
+- **Webpack**: Module bundler for all applications
+- **Babel**: JavaScript/TypeScript transpilation
+- **TypeScript**: Primary language with strict configuration
 
 ## Core Technologies
-
-- **React 19.1.0**: Latest React with modern features and JSX transform
-- **TypeScript 5.8.3**: Strict TypeScript configuration with ESNext target
-- **pnpm**: Package manager with workspace support
-- **Node.js**: Runtime environment
-
-## Build Tools & Bundlers
-
-- **Webpack 5**: Primary bundler for emotion app with dev server
-- **Vite**: Used with Vanilla Extract plugin for CSS-in-JS
-- **Babel**: Transpilation with React, TypeScript, and Emotion presets
+- **React 19**: Latest React version with modern hooks and patterns
+- **TypeScript 5.8**: Strict type checking enabled
+- **ESLint + Prettier**: Code quality and formatting
 
 ## Styling Solutions
+- **Emotion**: CSS-in-JS for the emotion app
+- **Vanilla Extract**: CSS-in-TS utility classes
+- **CSS Modules**: Traditional CSS with scoped classes
 
-- **Emotion**: CSS-in-JS with styled components (`@emotion/react`, `@emotion/styled`)
-- **Vanilla Extract**: Zero-runtime CSS-in-JS with TypeScript support
+## Form Libraries
+- **React Hook Form**: Performance-focused form library
+- **Yup**: Schema validation
+- **@hookform/resolvers**: Integration between RHF and validation libraries
 
-## Code Quality & Linting
-
-- **ESLint 8.56.0**: Linting with TypeScript and Prettier integration
-- **Prettier 3.2.5**: Code formatting with specific style rules
-- **TypeScript ESLint**: Strict TypeScript linting rules
+## Testing
+- **Jest**: Test runner and framework
+- **@testing-library/react**: Component testing utilities
+- **@testing-library/jest-dom**: Custom Jest matchers
+- **@testing-library/user-event**: User interaction simulation
 
 ## Common Commands
 
+### Development
 ```bash
-# Development
-pnpm dev:emotion          # Start emotion app dev server
-pnpm dev:context-api      # Start context API form builder
+# Start specific app
+pnpm dev:emotion
+pnpm dev:react-hook-form-yup
+pnpm dev:context-api
 
-# Linting & Quality
-pnpm lint                 # Run ESLint across all apps
-pnpm lint:fix             # Auto-fix ESLint issues
-
-# App-specific commands (run from app directory)
-npm run dev               # Start webpack dev server
-npm run build             # Production build
-npm run ts-check          # TypeScript type checking
-npm run clean             # Clean dist folder
+# Run from app directory
+pnpm dev
 ```
 
-## Workspace Configuration
+### Testing
+```bash
+# Run tests (from react-hook-form-yup)
+pnpm test
+pnpm test:watch
+pnpm test:coverage
+```
 
-- **Monorepo**: pnpm workspaces with apps/* pattern
-- **Shared Dependencies**: React/React-DOM shared across workspace
-- **Individual Configs**: Each app has its own build configuration
+### Code Quality
+```bash
+# Lint entire workspace
+pnpm lint
+pnpm lint:fix
+
+# Type checking
+pnpm ts-check
+```
+
+### Build
+```bash
+# Build specific app
+pnpm build  # from app directory
+pnpm clean  # clean dist folder
+```
