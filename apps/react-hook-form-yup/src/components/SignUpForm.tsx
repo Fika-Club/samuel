@@ -79,17 +79,47 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
     }
   );
 
-  // Form reset handler
+  // Form reset handler - clears all fields, errors, and resets form state
   const onResetHandler = () => {
-    reset();
+    // Reset form to initial values and clear all errors
+    reset({
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      agreeToTerms: false
+    });
+    
+    // Call external onReset handler if provided
     if (onReset) {
       onReset();
     }
+    
+    // Log reset action for debugging
+    console.log('폼이 초기화되었습니다');
   };
 
   return (
-    <div className={`signup-form ${className}`}>
-      <h2>회원가입</h2>
+    <div 
+      className={`signup-form ${className}`}
+      style={{
+        maxWidth: '400px',
+        margin: '0 auto',
+        padding: '24px',
+        backgroundColor: '#f8f9fa',
+        borderRadius: '8px',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+      }}
+    >
+      <h2 style={{ 
+        textAlign: 'center', 
+        marginBottom: '24px', 
+        color: '#333',
+        fontSize: '24px',
+        fontWeight: '600'
+      }}>
+        회원가입
+      </h2>
       <form onSubmit={onSubmitHandler} noValidate>
         {/* Name field with real-time validation */}
         <FormField
@@ -146,11 +176,30 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
         />
 
         {/* Submit and Reset buttons */}
-        <div className="form-actions">
+        <div 
+          className="form-actions"
+          style={{
+            display: 'flex',
+            gap: '12px',
+            marginTop: '24px',
+            justifyContent: 'center'
+          }}
+        >
           <button
             type="submit"
             disabled={!isValid || isSubmitting}
             className="submit-button"
+            style={{
+              padding: '12px 24px',
+              backgroundColor: isValid && !isSubmitting ? '#007bff' : '#6c757d',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: isValid && !isSubmitting ? 'pointer' : 'not-allowed',
+              fontSize: '16px',
+              fontWeight: '500',
+              transition: 'background-color 0.2s'
+            }}
           >
             {isSubmitting ? '처리 중...' : '회원가입'}
           </button>
@@ -160,6 +209,17 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             onClick={onResetHandler}
             disabled={isSubmitting}
             className="reset-button"
+            style={{
+              padding: '12px 24px',
+              backgroundColor: isSubmitting ? '#6c757d' : '#dc3545',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: isSubmitting ? 'not-allowed' : 'pointer',
+              fontSize: '16px',
+              fontWeight: '500',
+              transition: 'background-color 0.2s'
+            }}
           >
             초기화
           </button>
