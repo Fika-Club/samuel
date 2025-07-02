@@ -1,14 +1,23 @@
 const path = require('path');
 
 module.exports = {
-    mode: 'development',
     entry: './src/main.tsx',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
+        clean: true,
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        modules: [
+            path.resolve(__dirname, 'node_modules'),
+            path.resolve(__dirname, '../../node_modules'),
+            'node_modules',
+        ],
+        alias: {
+            react: path.resolve(__dirname, '../../node_modules/react'),
+            'react-dom': path.resolve(__dirname, '../../node_modules/react-dom'),
+        },
     },
     module: {
         rules: [
@@ -20,7 +29,9 @@ module.exports = {
         ],
     },
     devServer: {
-        static: path.join(__dirname, 'dist'),
+        static: {
+            directory: path.resolve(__dirname, 'public'),
+        },
         compress: true,
         port: 3000,
     },
