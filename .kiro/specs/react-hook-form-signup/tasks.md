@@ -29,7 +29,7 @@
     - Style error messages with consistent appearance
     - _Requirements: 8.4_
 
-  - [ ] 3.2 Implement FormField component
+  - [x] 3.2 Implement FormField component
     - Create `src/components/FormField.tsx` as reusable input wrapper
     - Support different input types (text, email, password, checkbox)
     - Integrate with React Hook Form register function
