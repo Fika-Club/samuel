@@ -105,6 +105,7 @@ const FormField: React.FC<FormFieldProps> = ({
         style={baseInputStyles}
         aria-describedby={hasError ? errorId : undefined}
         aria-invalid={hasError}
+        {...register(name)}
         onFocus={(e) => {
           Object.assign(e.target.style, focusStyles);
         }}
@@ -112,7 +113,6 @@ const FormField: React.FC<FormFieldProps> = ({
           e.target.style.borderColor = hasError ? '#dc3545' : '#e1e5e9';
           e.target.style.boxShadow = 'none';
         }}
-        {...register(name)}
       />
       <ErrorMessage 
         message={error?.message} 

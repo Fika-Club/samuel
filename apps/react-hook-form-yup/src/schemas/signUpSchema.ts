@@ -33,6 +33,7 @@ export const signUpSchema = yup.object({
   // Terms agreement validation: required to be true
   agreeToTerms: yup
     .boolean()
+    .required('약관에 동의해주세요')
     .oneOf([true], '약관에 동의해주세요')
 });
 
