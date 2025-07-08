@@ -1,6 +1,8 @@
 {
   "name": "emotion",
   "version": "1.0.0",
+  "private": true,
+  "main": "src/main.tsx",
   "scripts": {
     "dev": "webpack serve --config webpack.config.js --mode development",
     "build": "webpack --config webpack.config.js --mode production",
@@ -26,6 +28,12 @@
     "ts-loader": "^9.5.2",
     "webpack": "^5.99.9",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2"
+    "webpack-dev-server": "^5.2.2",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }
